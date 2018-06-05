@@ -82,7 +82,7 @@ namespace BFYOC
                     return (ActionResult)new BadRequestObjectResult("Rating needs to be between 0 and 5");
                 }
 
-                await document.AddAsync(new Rating
+                var rating = new Rating
                 {
                     id = id,
                     userId = data.userId,
@@ -91,9 +91,11 @@ namespace BFYOC
                     locationName = data.locationName,
                     rating = data.rating,
                     userNotes = data.userNotes
-                });
+                };
 
-                return (ActionResult)new OkObjectResult(document);
+                await document.AddAsync(rating);
+
+                return (ActionResult)new OkObjectResult(rating);
             }
             catch(Exception e)
             {
