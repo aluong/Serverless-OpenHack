@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27703.2026
+VisualStudioVersion = 15.0.26711.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "serverless-open-hack", "serverless-open-hack.csproj", "{59334F5B-BB7A-4583-8FDF-4A627DA77EFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "serverless-open-hack", "serverless-open-hack.csproj", "{A5FE8707-0EE6-44FA-9CD1-B2411A272817}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{59334F5B-BB7A-4583-8FDF-4A627DA77EFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{59334F5B-BB7A-4583-8FDF-4A627DA77EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{59334F5B-BB7A-4583-8FDF-4A627DA77EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{59334F5B-BB7A-4583-8FDF-4A627DA77EFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5FE8707-0EE6-44FA-9CD1-B2411A272817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5FE8707-0EE6-44FA-9CD1-B2411A272817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5FE8707-0EE6-44FA-9CD1-B2411A272817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5FE8707-0EE6-44FA-9CD1-B2411A272817}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {28A9B038-DEED-4521-873C-DA96C9F06B44}
+		SolutionGuid = {2A872BD5-53B0-4544-A54E-076B4224E4CD}
 	EndGlobalSection
 EndGlobal
