@@ -19,6 +19,8 @@ namespace BFYOC
             // Set Timestamp
             var timestamp = DateTime.UtcNow;
 
+            var rand = new Random();
+
             var rating = new Rating
             {
                 id = id,
@@ -27,7 +29,8 @@ namespace BFYOC
                 timestamp = timestamp,
                 locationName = data.locationName,
                 rating = data.rating,
-                userNotes = data.userNotes
+                userNotes = data.userNotes,
+                magicNumber = rand.Next()
             };
 
             await document.AddAsync(rating);
