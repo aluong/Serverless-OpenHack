@@ -39,7 +39,7 @@ namespace BFYOC
 
         [FunctionName("CreateRating")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ratings")]HttpRequest req,
             [CosmosDB(
                 databaseName: "Challenge2",
                 collectionName: "Ratings",
