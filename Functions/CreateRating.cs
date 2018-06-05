@@ -82,6 +82,7 @@ namespace BFYOC
                     return (ActionResult)new BadRequestObjectResult("Rating needs to be between 0 and 5");
                 }
 
+                var rand = new Random();
                 var rating = new Rating
                 {
                     id = id,
@@ -90,7 +91,8 @@ namespace BFYOC
                     timestamp = timestamp,
                     locationName = data.locationName,
                     rating = data.rating,
-                    userNotes = data.userNotes
+                    userNotes = data.userNotes,
+                    magicNumber = rand.Next()
                 };
 
                 await document.AddAsync(rating);
