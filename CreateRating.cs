@@ -38,52 +38,68 @@ namespace BFYOC
         private static readonly HttpClient client = new HttpClient();
 
         [FunctionName("CreateRating")]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequest req, TraceWriter log)
+        public static async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequest req,
+            [CosmosDB(
+                databaseName: "Challenge2",
+                collectionName: "Ratings",
+                ConnectionStringSetting = "CosmosDBConnectionString")]
+                IAsyncCollector<Rating> document,
+            TraceWriter log)
         {
-            // Grab data from body
-            string requestBody = new StreamReader(req.Body).ReadToEnd();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-
-            log.Info("C# HTTP trigger function processed a request.");
-
-            // Validate userId
-            var response = await client.GetAsync($"https://serverlessohlondonuser.azurewebsites.net/api/GetUser?userId={data.userId}");
-            if (response.StatusCode != System.Net.HttpStatusCode.OK) 
+            try
             {
-                return (ActionResult) new BadRequestObjectResult($"UserId: {data.userId} doesn't exists");
-            }
+                // Grab data from body
+                string requestBody = new StreamReader(req.Body).ReadToEnd();
+                dynamic data = JsonConvert.DeserializeObject(requestBody);
 
-            // Validate productId
-            response = await client.GetAsync($"https://serverlessohlondonproduct.azurewebsites.net/api/GetProduct?productId={data.productId}");
-            if (response.StatusCode != System.Net.HttpStatusCode.OK) 
+                log.Info("C# HTTP trigger function processed a request.");
+
+                // Validate userId
+                var response = await client.GetAsync($"https://serverlessohlondonuser.azurewebsites.net/api/GetUser?userId={data.userId}");
+                if (response.StatusCode != System.Net.HttpStatusCode.OK) 
+                {
+                    return (ActionResult) new BadRequestObjectResult($"UserId: {data.userId} doesn't exists");
+                }
+
+                // Validate productId
+                response = await client.GetAsync($"https://serverlessohlondonproduct.azurewebsites.net/api/GetProduct?productId={data.productId}");
+                if (response.StatusCode != System.Net.HttpStatusCode.OK) 
+                {
+                    return (ActionResult) new BadRequestObjectResult($"ProductId: {data.productId} doesn't exists");
+                }
+
+                // Set unique id
+                var id = Guid.NewGuid();
+
+                // Set Timestamp
+                var timestamp = DateTime.UtcNow;
+
+                // Check rating is between 0 and 5
+                int ratingValue = -1;
+                if (!int.TryParse((string)data.rating, out ratingValue) || ratingValue < 0 || ratingValue > 5)
+                {
+                    return (ActionResult)new BadRequestObjectResult("Rating needs to be between 0 and 5");
+                }
+
+                await document.AddAsync(new Rating
+                {
+                    id = id,
+                    userId = data.userId,
+                    productId = data.productId,
+                    timestamp = timestamp,
+                    locationName = data.locationName,
+                    rating = data.rating,
+                    userNotes = data.userNotes
+                });
+
+                return (ActionResult)new OkObjectResult(document);
+            }
+            catch(Exception e)
             {
-                return (ActionResult) new BadRequestObjectResult($"ProductId: {data.productId} doesn't exists");
+                Console.WriteLine(e);
+                return (ActionResult)new BadRequestObjectResult("Error");
             }
-
-            // Set unique id
-            var id = Guid.NewGuid();
-
-            // Set Timestamp
-            var timestamp = DateTime.UtcNow;
-
-            // Check rating is between 0 and 5
-            int ratingValue = -1;
-            if (!int.TryParse((string)data.rating, out ratingValue) || ratingValue < 0 || ratingValue > 5)
-            {
-                return (ActionResult)new BadRequestObjectResult("Rating needs to be between 0 and 5");
-            }
-            
-            var rating = new Rating {
-                id = id,
-                userId = data.userId,
-                productId = data.productId,
-                timestamp = timestamp,
-                locationName = data.locationName,
-                rating = data.rating,
-                userNotes = data.userNotes
-            };
-
-            return (ActionResult)new OkObjectResult(rating);
         }
     }
 }
