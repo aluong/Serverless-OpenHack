@@ -9,13 +9,9 @@ public static IActionResult Run(HttpRequest req, TraceWriter log)
 {
     log.Info("C# HTTP trigger function processed a request.");
 
-    string name = req.Query["name"];
+    string productId = req.Query["productId"];
 
-    string requestBody = new StreamReader(req.Body).ReadToEnd();
-    dynamic data = JsonConvert.DeserializeObject(requestBody);
-    name = name ?? data?.name;
-
-    return name != null
-        ? (ActionResult)new OkObjectResult($"Hello, {name}")
+    return productId != null
+        ? (ActionResult)new OkObjectResult($"The product name for your product id {productId} is Starfruit Explosion")
         : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
 }
