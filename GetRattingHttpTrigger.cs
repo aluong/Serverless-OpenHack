@@ -15,21 +15,22 @@ namespace BFYOC
     {
         [FunctionName("GetRattingHttpTrigger")]
 
-        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "ratings/{ratingId}")]HttpRequest req,
+        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "ratings/{id:guid}")]HttpRequest req,
              [CosmosDB(
                 databaseName: "Challenge2",
                 collectionName: "Ratings",
                 ConnectionStringSetting = "CosmosDBConnectionString",
-                Id = "{ratingId}")]dynamic rating, TraceWriter log)
+                PartitionKey = "/id",
+                Id = "{id}")]Rating rating, TraceWriter log)
         {
             log.Info("Request for Get Ratting Http Trigger.");
 
-            string ratingId = req.Query["ratingId"];
+           // string ratingId = req.Query["ratingId"];
 
-            if (ratingId == null) return new BadRequestObjectResult("Please Enter RattingID");
+           // if (ratingId == null) return new BadRequestObjectResult("Please Enter RattingID");
                 
 
-           // var ratting = new Rating();
+           //// var ratting = new Rating();
 
             return (ActionResult)new OkObjectResult(rating);
         }
