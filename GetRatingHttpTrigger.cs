@@ -8,31 +8,26 @@ using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Azure.WebJobs.Extensions.CosmosDB;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BFYOC
 {
-    public static class GetRattingHttpTrigger
+    public static class GetRatingHttpTrigger
     {
-        [FunctionName("GetRattingHttpTrigger")]
+        [FunctionName("GetRatingHttpTrigger")]
 
         public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "ratings/{id:guid}")]HttpRequest req,
              [CosmosDB(
                 databaseName: "Challenge2",
                 collectionName: "Ratings",
                 ConnectionStringSetting = "CosmosDBConnectionString",
-                PartitionKey = "/id",
-                Id = "{id}")]Rating rating, TraceWriter log)
+                //PartitionKey = "/id",
+                //Id = "{id}")]
+                SqlQuery = "select * from Ratings r where r.id = {id}")]
+                IEnumerable<Rating> rating, TraceWriter log)
         {
-            log.Info("Request for Get Ratting Http Trigger.");
-
-           // string ratingId = req.Query["ratingId"];
-
-           // if (ratingId == null) return new BadRequestObjectResult("Please Enter RattingID");
-                
-
-           //// var ratting = new Rating();
-
-            return (ActionResult)new OkObjectResult(rating);
+            return (ActionResult)new OkObjectResult(rating.SingleOrDefault());
         }
     }
 
