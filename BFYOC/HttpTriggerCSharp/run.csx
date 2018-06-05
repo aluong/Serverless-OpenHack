@@ -11,6 +11,10 @@ public static IActionResult Run(HttpRequest req, TraceWriter log)
 
     string productId = req.Query["productId"];
 
+    string requestBody = new StreamReader(req.Body).ReadToEnd();
+    dynamic data = JsonConvert.DeserializeObject(requestBody);
+    productId = productId ?? data?.productId;
+
     return productId != null
         ? (ActionResult)new OkObjectResult($"The product name for your product id {productId} is Starfruit Explosion")
         : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
