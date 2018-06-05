@@ -20,7 +20,9 @@ namespace BFYOC
 
             if (ratingId == null) new BadRequestObjectResult("Please Enter RattingID");
 
-            return (ActionResult)new OkObjectResult($"The product name for your product id {ratingId} is Starfruit Explosion");
+            var ratting = new Rating();
+
+            return (ActionResult)new OkObjectResult(ratting);
         }
     }
 }
