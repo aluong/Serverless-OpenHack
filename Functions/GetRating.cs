@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace BFYOC
 {
-    public static class GetRatingHttpTrigger
+    public static class GetRating
     {
         [FunctionName("GetRatingHttpTrigger")]
 
