@@ -3,18 +3,33 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Host;
+using System.Net.Http;
+using System;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Text;
 
 namespace BFYOC
 {
+    public class Product
+    {
+
+    }
+
     public static class GetEmailTemplate
     {
+        private static HttpClient client = new HttpClient { BaseAddress = new Uri("https://bfyoc-apimanagement.azure-api.net/icecream/") };
+
         [FunctionName("GetEmailtemplate")]
-        public static IActionResult Run(
+        public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "emails")]HttpRequest req,
             TraceWriter log
         )
         {
-            return new OkObjectResult(@"<!DOCTYPE html>
+            var products = JsonConvert.DeserializeObject<IEnumerable<dynamic>>(await client.GetStringAsync("GetProducts"));
+
+            var html = @"<!DOCTYPE html>
 <html>
 <body style=""background-color: whitesmoke; color: #454545; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; padding-bottom: 3em;"">
     <table style=""width:100%; color:#454545"">
@@ -40,12 +55,22 @@ namespace BFYOC
         </tr>
     </thead>
     <tbody style=""font-size: 16px;"">
-        <!-- LOOP THROUGH EACH PRODUCT HERE AND CREATE A TABLE ROW ENTRY FOR EACH -->
+        {{loop}}
     </tbody>
     </table>
     <p style=""text-align: center; margin-top: 3em;font-size: 20px;"">Please contact your representative at Best For You Organics to get more information..</p>
 </body>
-</html>");
+</html>";
+            var builder = new StringBuilder();
+
+            foreach(var product in products)
+            {
+                builder.AppendLine($"<tr><td>{product.productName}</td><td>{product.productDescription}</td><td>{product.productId}</td></tr>");
+            }
+
+            html = html.Replace("{{loop}}", builder.ToString());
+
+            return new OkObjectResult(html);
         }
     }
 }
