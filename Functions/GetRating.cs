@@ -17,17 +17,17 @@ namespace BFYOC
     {
         [FunctionName("GetRatingHttpTrigger")]
 
-        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "ratings/{id:guid}")]HttpRequest req,
+        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ratings/{id:guid}")]HttpRequest req,
              [CosmosDB(
                 databaseName: "Challenge2",
                 collectionName: "Ratings",
                 ConnectionStringSetting = "CosmosDBConnectionString",
-                //PartitionKey = "/id",
-                //Id = "{id}")]
-                SqlQuery = "select * from Ratings r where r.id = {id}")]
-                IEnumerable<Rating> rating, TraceWriter log)
+                PartitionKey = "{id}",
+                Id = "{id}")]
+                //SqlQuery = "select * from Ratings r where r.id = {id}")]
+                Rating rating, TraceWriter log)
         {
-            return (ActionResult)new OkObjectResult(rating.SingleOrDefault());
+            return (ActionResult)new OkObjectResult(rating);
         }
     }
 

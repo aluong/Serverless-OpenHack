@@ -34,7 +34,7 @@ namespace BFYOC
     }
     */
     public static class CreateRating
-    {   
+    {
         private static readonly HttpClient client = new HttpClient();
 
         [FunctionName("CreateRating")]
@@ -49,31 +49,25 @@ namespace BFYOC
         {
             try
             {
+                log.Info("C# HTTP trigger function processed a request.");
+
                 // Grab data from body
                 string requestBody = new StreamReader(req.Body).ReadToEnd();
                 dynamic data = JsonConvert.DeserializeObject(requestBody);
 
-                log.Info("C# HTTP trigger function processed a request.");
-
                 // Validate userId
                 var response = await client.GetAsync($"https://serverlessohlondonuser.azurewebsites.net/api/GetUser?userId={data.userId}");
-                if (response.StatusCode != System.Net.HttpStatusCode.OK) 
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    return (ActionResult) new BadRequestObjectResult($"UserId: {data.userId} doesn't exists");
+                    return (ActionResult)new BadRequestObjectResult($"UserId: {data.userId} doesn't exists");
                 }
 
                 // Validate productId
                 response = await client.GetAsync($"https://serverlessohlondonproduct.azurewebsites.net/api/GetProduct?productId={data.productId}");
-                if (response.StatusCode != System.Net.HttpStatusCode.OK) 
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    return (ActionResult) new BadRequestObjectResult($"ProductId: {data.productId} doesn't exists");
+                    return (ActionResult)new BadRequestObjectResult($"ProductId: {data.productId} doesn't exists");
                 }
-
-                // Set unique id
-                var id = Guid.NewGuid();
-
-                // Set Timestamp
-                var timestamp = DateTime.UtcNow;
 
                 // Check rating is between 0 and 5
                 int ratingValue = -1;
@@ -82,18 +76,10 @@ namespace BFYOC
                     return (ActionResult)new BadRequestObjectResult("Rating needs to be between 0 and 5");
                 }
 
-                var rating = new Rating
-                {
-                    id = id,
-                    userId = data.userId,
-                    productId = data.productId,
-                    timestamp = timestamp,
-                    locationName = data.locationName,
-                    rating = data.rating,
-                    userNotes = data.userNotes
-                };
+                var andysCoolService = new CosmosService();
 
-                await document.AddAsync(rating);
+                var rating = await andysCoolService.CreateRatingFromDocument(data, document);
+                
 
                 return (ActionResult)new OkObjectResult(rating);
             }
