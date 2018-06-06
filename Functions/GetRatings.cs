@@ -4,6 +4,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Host;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BFYOC
 {
@@ -19,6 +20,13 @@ namespace BFYOC
             TraceWriter log
         )
         {
+            int limit;
+
+            if(int.TryParse(req.Query["limit"], out limit))
+            {
+                return new OkObjectResult(ratings.Take(limit));
+            }
+
             return new OkObjectResult(ratings);
         }
     }
