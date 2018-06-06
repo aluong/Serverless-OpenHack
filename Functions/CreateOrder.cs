@@ -24,7 +24,7 @@ namespace BFYOC
                 databaseName: "Challenge2",
                 collectionName: "Orders",
                 ConnectionStringSetting = "CosmosDBConnectionString")]
-                IAsyncCollector<Rating> document,
+                IAsyncCollector<Order> document,
             TraceWriter log)
         {
             try
@@ -45,8 +45,10 @@ namespace BFYOC
 
                 var andysCoolService = new CosmosService();
 
-                var rating = await andysCoolService.CreateRatingFromDocument(data, document);
+                //Get Data from the Blob Storage
 
+
+                var rating = await andysCoolService.CreateOrderFromData(data, document);
 
                 return (ActionResult)new OkObjectResult(rating);
             }
