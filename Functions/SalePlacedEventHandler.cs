@@ -32,14 +32,9 @@ namespace BFYOC
                 IAsyncCollector<dynamic> document,
             TraceWriter log)
         {
-            log.Info(JsonConvert.SerializeObject(messages));
-
             foreach (var message in messages)
             {
-                var sale = JsonConvert.DeserializeObject(message);
-
-                log.Info("Saving sale info");
-                await document.AddAsync(sale);
+                await document.AddAsync(message);
             }
         }
     }
