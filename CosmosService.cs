@@ -37,5 +37,20 @@ namespace BFYOC
 
             return rating;
         }
+
+        public async Task<Order> CreateOrderFromData(dynamic data, IAsyncCollector<Order> document)
+        {
+            // Set unique id
+            var id = Guid.NewGuid();
+
+            var order = new Order
+            {
+                id = Guid.NewGuid()
+
+            };
+            await document.AddAsync(order);
+
+            return order;
+        }
     }
 }
