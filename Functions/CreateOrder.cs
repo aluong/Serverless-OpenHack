@@ -19,12 +19,12 @@ namespace BFYOC
 
         [FunctionName("CreateOrder")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ratings")]HttpRequest req,
-            [CosmosDB(
-                databaseName: "Challenge2",
-                collectionName: "Orders",
-                ConnectionStringSetting = "CosmosDBConnectionString")]
-                IAsyncCollector<Order> document,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "order")]HttpRequest req,
+            // [CosmosDB(
+            //     databaseName: "Challenge2",
+            //     collectionName: "Orders",
+            //     ConnectionStringSetting = "CosmosDBConnectionString")]
+            //     IAsyncCollector<Order> document,
             TraceWriter log)
         {
             try
@@ -46,9 +46,10 @@ namespace BFYOC
                 var andysCoolService = new CosmosService();
 
                 //Get Data from the Blob Storage
+                string storageConnectionString = Environment.GetEnvironmentVariable("BlobConnectionString");
 
 
-                var rating = await andysCoolService.CreateOrderFromData(data, document);
+                //var rating = await andysCoolService.CreateOrderFromData(data, document);
 
                 return (ActionResult)new OkObjectResult(rating);
             }
