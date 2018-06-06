@@ -43,6 +43,79 @@
 			"response": []
 		},
 		{
+			"name": "Get User",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{AzureKey}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/GetUser?userId=cc20a6fb-a91f-4192-874d-132493685376",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"GetUser"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "cc20a6fb-a91f-4192-874d-132493685376"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Product",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{AzureKey}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/GetProduct?productId=4c25613a-a3c2-4ef3-8e02-9c335eb23204",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"GetProduct"
+					],
+					"query": [
+						{
+							"key": "productId",
+							"value": "4c25613a-a3c2-4ef3-8e02-9c335eb23204"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Products",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{AzureKey}}"
+					}
+				],
+				"body": {},
+				"url": "{{url}}/GetProducts"
+			},
+			"response": []
+		},
+		{
 			"name": "Get Rating By ID",
 			"request": {
 				"method": "POST",
