@@ -37,31 +37,5 @@ namespace BFYOC
 
             return rating;
         }
-
-        public async Task<Order> CreateOrderFromData(dynamic data, IAsyncCollector<Order> document)
-        {
-
-            var order = new Order
-            {
-                id = Guid.NewGuid(),
-                productid = data.productid,
-                productname = data.productname,
-                productdescription = data.productdescription,
-                ponumber = data.ponumber,
-                quantity = data.quantity,
-                unitcost = data.unitcost,
-                totalcost = data.totalcost,
-                totaltax = data.totaltax,
-                OrderDate = data.OrderDate,
-                LocationId = data.LocationId,
-                locationname = data.locationname,
-                locationaddress = data.locationaddress,
-                locationpostcode = data.locationpostcode,
-            };
-
-            await document.AddAsync(order);
-
-            return order;
-        }
     }
 }
