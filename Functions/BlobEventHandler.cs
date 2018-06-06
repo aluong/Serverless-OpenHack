@@ -126,9 +126,9 @@ namespace BFYOC
 
                     var orders = new Dictionary<string, Order>();
 
-                    var header = await GetData(client, currentBatch.Header);
+                    var header = await GetData(client, currentBatch.Header, log);
 
-                    log.Info($"Parsing Header");
+                    log.Info($"Parsing Header: {header.Count}");
                     foreach(var line in header)
                     {
                         orders.Add(line[0], new Order
@@ -144,16 +144,16 @@ namespace BFYOC
                         });
                     }
 
-                    log.Info($"Parsing Products");
-                    var products = await GetData(client, currentBatch.Products);
+                    var products = await GetData(client, currentBatch.Products, log);
+                    log.Info($"Parsing Products: {products.Count}");
                     var productsDict = products.ToDictionary(p => p[0], p => new Product{
                         productid = p[0],
                         productname = p[1],
                         productdescription = p[2],
                     });
 
-                    log.Info($"Parsing OrderLines");
-                    var lines = await GetData(client, currentBatch.Lines);
+                    var lines = await GetData(client, currentBatch.Lines, log);
+                    log.Info($"Parsing OrderLines: {lines.Count}");
                     foreach(var line in lines)
                     {
                         //ponumber,productid,quantity,unitcost,totalcost,totaltax
@@ -178,8 +178,10 @@ namespace BFYOC
             }
         }
 
-        private static async Task<List<string[]>> GetData(CloudBlobClient client, Uri uri)
+        private static async Task<List<string[]>> GetData(CloudBlobClient client, Uri uri, TraceWriter log)
         {
+            log.Info($"Downloading: {uri}");
+
             var blobRef = await client.GetBlobReferenceFromServerAsync(uri);
             
             var result = new List<string[]>(); 
