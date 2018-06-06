@@ -189,7 +189,7 @@ namespace BFYOC
             using(var stream = new MemoryStream())
             {
                 await blobRef.DownloadToStreamAsync(stream);
-
+                stream.Seek(0, SeekOrigin.Begin);
                 using(var reader = new StreamReader(stream))
                 {
                     var count = 0;
