@@ -16,7 +16,7 @@ namespace BFYOC
         [FunctionName("BlobEventHandler")]
         public static void Run([EventGridTrigger]EventGridEvent eventGridEvent, TraceWriter log)
         {
-            log.Info(eventGridEvent.ToString());
+            log.Info(JsonConvert.SerializeObject(eventGridEvent));
         }
     }
 }
