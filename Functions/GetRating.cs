@@ -30,5 +30,4 @@ namespace BFYOC
             return (ActionResult)new OkObjectResult(rating);
         }
     }
-
 }

@@ -12,11 +12,6 @@ using System.Text;
 
 namespace BFYOC
 {
-    public class Product
-    {
-
-    }
-
     public static class GetEmailTemplate
     {
         private static HttpClient client = new HttpClient { BaseAddress = new Uri("https://bfyoc-apimanagement.azure-api.net/icecream/") };
