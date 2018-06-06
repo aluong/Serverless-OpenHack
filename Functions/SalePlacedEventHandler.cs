@@ -25,9 +25,19 @@ namespace BFYOC
         [FunctionName("SalesPlacedEventHandler")]
         public static async Task Run(
             [EventHubTrigger("32inside", Connection = "EventHubConnectionAppSetting")]string message,
+            [CosmosDB(
+                databaseName: "Challenge2",
+                collectionName: "sales",
+                ConnectionStringSetting = "CosmosDBConnectionString")]
+                IAsyncCollector<dynamic> document,
             TraceWriter log)
         {
             log.Info(message);
+
+            var sale = JsonConvert.DeserializeObject(message);
+
+            log.Info("Saving sale info");
+            await document.AddAsync(sale);
         }
     }
 }
