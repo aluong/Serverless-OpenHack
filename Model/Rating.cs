@@ -12,5 +12,7 @@ namespace BFYOC
         public int rating { get; set; }
         public string userNotes { get; set; }
         public int magicNumber { get; set; }
+
+        public double sentimentScore { get; set; }
     }
 }

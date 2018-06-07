@@ -9,6 +9,9 @@ using Microsoft.Azure.WebJobs.Host;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace BFYOC
 {
@@ -45,11 +48,11 @@ namespace BFYOC
                 collectionName: "Ratings",
                 ConnectionStringSetting = "CosmosDBConnectionString")]
                 IAsyncCollector<Rating> document,
-            TraceWriter log)
+            ILogger log)
         {
             try
             {
-                log.Info("C# HTTP trigger function processed a request.");
+                log.LogInformation("C# HTTP trigger function processed a request.");
 
                 // Grab data from body
                 string requestBody = new StreamReader(req.Body).ReadToEnd();
@@ -78,8 +81,7 @@ namespace BFYOC
 
                 var andysCoolService = new CosmosService();
 
-                var rating = await andysCoolService.CreateRatingFromDocument(data, document);
-                
+                var rating = await andysCoolService.CreateRatingFromDocument(data, document, client, log);
 
                 return (ActionResult)new OkObjectResult(rating);
             }
