@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace BFYOC
 {
@@ -25,8 +26,10 @@ namespace BFYOC
                 PartitionKey = "{id}",
                 Id = "{id}")]
                 //SqlQuery = "select * from Ratings r where r.id = {id}")]
-                Rating rating, TraceWriter log)
+                Rating rating, 
+                ILogger log)
         {
+            log.LogMetric("GetRating-Metric", 1000);
             return (ActionResult)new OkObjectResult(rating);
         }
     }
