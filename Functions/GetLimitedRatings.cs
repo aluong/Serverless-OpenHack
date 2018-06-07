@@ -4,18 +4,17 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Host;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BFYOC
 {
-    public static class GetRatings
+    public static class GetLimitedRatings
     {
-        [FunctionName("GetRatings")]
+        [FunctionName("GetLimitedRatings")]
         public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ratings")]HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ratings/limit/{limit:int}")]HttpRequest req,
             [CosmosDB("Challenge2", "Ratings",
                 ConnectionStringSetting = "CosmosDBConnectionString",
-                SqlQuery = "select * from Ratings")]
+                SqlQuery = "select top {limit} * from Ratings")]
                 IEnumerable<Rating> ratings,
             TraceWriter log
         )
