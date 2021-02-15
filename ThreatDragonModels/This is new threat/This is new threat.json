@@ -1,0 +1,12 @@
+{
+  "summary": {
+    "title": "This is new threat",
+    "owner": "Me",
+    "description": "THis is really dangerous"
+  },
+  "detail": {
+    "contributors": [],
+    "diagrams": [],
+    "reviewer": "SOme one else"
+  }
+}
